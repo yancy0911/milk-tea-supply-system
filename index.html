@@ -1,16 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
-    <title>奶茶供应系统</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>奶茶供应管理系统</title>
 </head>
-<body>
-    <h1>奶茶供应管理系统</h1>
+<body style="font-family: Arial; padding: 20px;">
+  <h1>奶茶供应管理系统</h1>
+  <p>欢迎进入系统</p>
 
-    <p>欢迎进入系统</p>
+  <button onclick="showOrderForm()">客户下单</button>
+  <button>仓库管理</button>
+  <button>老板后台</button>
 
-    <button>客户下单</button>
-    <button>仓库管理</button>
-    <button>老板后台</button>
+  <div id="orderForm" style="display:none; margin-top:20px;">
+    <h2>客户下单</h2>
 
+    <p><input id="name" placeholder="客户名字" /></p>
+    <p><input id="phone" placeholder="电话" /></p>
+    <p><input id="product" placeholder="产品" /></p>
+    <p><input id="quantity" placeholder="数量" /></p>
+    <p><input id="address" placeholder="地址" /></p>
+
+    <p>
+      <button onclick="submitOrder()">提交订单</button>
+    </p>
+
+    <p id="result"></p>
+  </div>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyAD4sque0fxRBwYXg8oYImoUcrTnrNVKxMGt7fBBg4ZLl4mvAF-3HIK5PMTPHsVMzU/exec";
+
+    function showOrderForm() {
+      document.getElementById("orderForm").style.display = "block";
+    }
+
+    function submitOrder() {
+      const data = {
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        product: document.getElementById("product").value,
+        quantity: document.getElementById("quantity").value,
+        address: document.getElementById("address").value
+      };
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(response => response.text())
+      .then(result => {
+        document.getElementById("result").innerText = "下单成功 ✅";
+      })
+      .catch(error => {
+        document.getElementById("result").innerText = "提交失败 ❌";
+      });
+    }
+  </script>
 </body>
 </html>
